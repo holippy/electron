@@ -7,6 +7,9 @@ var Article = React.createClass({
   componentWillMount(){
     this.data = 0;
     ArticleStore.dispatcher.addSubscribe({callback: this.dataloaded});
+
+    console.log(this.render());
+
     //this.actionCreator();
   },
   actionCreator(){
@@ -21,6 +24,7 @@ var Article = React.createClass({
 
   },
   render(){
+    console.log(this.data);
     if(this.data !== 0 ){
       return false;
     }else{
@@ -30,6 +34,8 @@ var Article = React.createClass({
     }
   }
 });
+
+
 
 ReactDOM.render(
   <Article/>,
