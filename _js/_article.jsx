@@ -4,40 +4,42 @@ var ReactDOM = require('react-dom');
 
 var Article = React.createClass({
 
+  getInitialState(){
+    return {
+      page: 20,
+      data: []
+    }
+  },
   componentWillMount(){
-    this.data = 0;
     ArticleStore.dispatcher.addSubscribe({callback: this.dataloaded});
-
-    console.log(this.render());
-
-    //this.actionCreator();
   },
-  actionCreator(){
-    ArticleStore.dispatcher.action.create({
-      actionType: 'contents',
-      page: 1,
-      callback: this.dataloaded
-    });
-  },
+
   dataloaded(data){
-    
-
+    if(ArticleStore.storeData.data){
+      this.replaceState({ data: ArticleStore.storeData.data });
+    }
   },
   render(){
-    console.log(this.data);
-    if(this.data !== 0 ){
+
+    if(this.state.data.length === 0){
       return false;
     }else{
-      return(
-        <p onClick={this.actionCreator}>text text</p>
+
+      let lists = this.state.data.map((res)=>{
+                  return <li key={res.id}><img src={res.images.thumbnail.url} /></li>;
+                  
+      });
+      return (
+        <ul>
+          {lists}
+        </ul>
       );
     }
   }
 });
 
 
-
-ReactDOM.render(
+var topRender = ReactDOM.render(
   <Article/>,
   document.getElementById('LytContainer')
 );

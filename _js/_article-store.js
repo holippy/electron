@@ -32,11 +32,11 @@ ArticleStore.dispatcher.action = {
 
   },
   create(payload){
-    console.log(payload);
     var that = this;
     var xhr = $.ajax({
         url: 'https://api.instagram.com/v1/users/self/media/recent?access_token=281020922.4bc370c.675847a199e0424890e6e6a65214a232',
         type: 'GET',
+        data: {'count': payload.page},
         crossDomain: true,
         cache: false,
         dataType: 'json',
@@ -51,28 +51,29 @@ ArticleStore.dispatcher.action = {
 }
 
 //subscriberにコールバックを追加
-ArticleStore.dispatcher.addSubscribe = function( callback ){
+ArticleStore.dispatcher.addSubscribe = ( callback )=>{
   ArticleStore.dispatcher.subscriber.push( callback.callback );
 }
 
 //subscriberに追加したコールバックを実行しコンポーネントに通知
-ArticleStore.dispatcher.publish = function( ){
-  for (var i = 0; i < ArticleStore.storeData.subscriber.length; i++) {
-    ArticleStore.dispatcher.subscriber[i]();
+ArticleStore.dispatcher.publish = (data)=>{
+  for (var i = 0; i < ArticleStore.dispatcher.subscriber.length; i++) {
+    ArticleStore.dispatcher.subscriber[i](data);
   };
 }
 
 //storeData
 ArticleStore.storeData.dispatchToken = ArticleStore.dispatcher.register(function(payload) {
-  //ArticleStore.dispatcher.waitFor([ArticleStore.storePager.dispatchToken]);
-  //ArticleStore.storeData.update();
-  console.log(payload.data );
+  ArticleStore.storeData.data = payload.data.data;
+
 });
 
 //storePager
 ArticleStore.storePager.dispatchToken = ArticleStore.dispatcher.register(function(payload) {
   ArticleStore.dispatcher.waitFor([ArticleStore.storeData.dispatchToken]);
-  console.log(payload.data );
+  ArticleStore.storePager.data = payload.data.data;
+  ArticleStore.storePager.page = payload.page;
+  ArticleStore.dispatcher.publish();
 });
 
 module.exports = ArticleStore;

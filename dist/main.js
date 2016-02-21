@@ -12,6 +12,9 @@ app.on('window-all-closed', function() {
     app.quit();
 });
 
+// var Tray = require('tray');
+// var appIcon = new Tray('file://' + __dirname + '/img/icon.png');
+
 app.on('ready', function() {
 
   // ブラウザ(Chromium)の起動, 初期画面のロード
