@@ -16,6 +16,7 @@
     "bower": "^1.7.7",
     "browserify": "^13.0.0",
     "electron-connect": "^0.3.7",
+    "electron-packager": "^5.2.1",
     "flux": "^2.1.1",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
